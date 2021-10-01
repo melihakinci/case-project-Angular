@@ -1,0 +1,93 @@
+<nav class="navbar navbar-light bg-primary">
+
+    <div class="container-fluid">
+        <h1 style="color:lightcyan;">Project - Order Details</h1>
+        <div class="d-flex">
+            <button (click)="clickAddOrderBtn()" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Order</button>
+        </div>
+
+    </div>
+</nav>
+
+<nav class="navbar mt-3">
+    <input class="form-control" type="text" [(ngModel)]="searchValue" name="Order"  placeholder="Enter Order data to Search">
+    
+  </nav>
+
+  
+  <table class="table table-bordered mt-3" >
+    <thead>
+      <th (click)="sort('id')" scope="col">ID ↑↓&nbsp;</th>
+      <th (click)="sort('Order')" scope="col">Order ↑↓&nbsp;</th>
+      <th (click)="sort('Model')" scope="col">Model ↑↓&nbsp;</th>
+      <th scope="col">Date &nbsp;</th>
+      <th (click)="sort('Country')" scope="col">Country ↑↓&nbsp;</th>
+      <th (click)="sort('Status')" scope="col">Status ↑↓&nbsp;</th>
+      <th>Action</th>
+
+    </thead>
+    <tbody>
+      <tr >
+        <tr *ngFor= "let row of orderData | searchfilter: searchValue | orderBy: key: reverse | paginate: {itemsPerPage:100,currentPage:p }; "  >
+            <td>{{row.id}}</td>
+            <td>{{row.Order}}</td>
+            <td>{{row.Model}}</td>
+            <td>{{row.Date}}</td>
+            <td>{{row.Country}}</td>
+            <td>{{row.Status}}</td>
+        <td>
+            <button (click)="onEdit(row)" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+            <button (click)="deleteOrder(row)"  class="btn btn-danger mt">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+
+    <pagination-controls (pageChange) = "p =  $event"></pagination-controls>
+    
+    
+  </table>
+
+
+   <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup] = "formValue">
+                
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Order</label>
+                  <input type="text" formControlName="Order" class="form-control" id="exampleInputPassword1" >
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Model</label>
+                    <input type="text" formControlName="Model" class="form-control" id="exampleInputPassword1" >
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Date</label>
+                    <input type="text" formControlName="Date" class="form-control" id="exampleInputPassword1" >
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Country</label>
+                    <input type="text" formControlName="Country" class="form-control" id="exampleInputPassword1" >
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Status</label>
+                    <input type="text"  formControlName="Status" class="form-control" id="exampleInputPassword1" >
+                  </div>
+
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" *ngIf="showAdd" (click)="postOrderDetails()" class="btn btn-primary">Submit</button>
+          <button type="button" *ngIf="showUpdate" (click)="updateOrderDetails()" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
